@@ -1,0 +1,60 @@
+
+# SEO settings
+title: FooBartn
+description: "inter-dimensional adventures in virtualization, infrastructure, and datacenter automation "
+keywords: "blog, powershell, vmware, cisco, azure, cloud, virtualization, infrastructure, datacenter, automation, devops"
+url: http://foobartn.github.io
+# baseurl: "/simplest"
+baseurl: null
+
+#google_analytics: UA-52446115-1
+#repo: http://github.com/nandomoreirame/simplest
+#disqus_shortname: "nandothemes"
+
+# Build settings
+permalink   : /:year/:title/
+markdown    : kramdown
+highlighter : pygments
+
+paginate: 4
+paginate_path: "/page/:num/"
+comments: true
+
+source: ./
+destination: _site
+
+# Sass configuration
+sass:
+  sass_dir: assets/scss
+  style: compressed # expanded
+
+# Author settings
+author:
+  name     : Joshua Barton
+  job      : Ever-Caffeinated Infrastructure Automator
+  bio      : "Advocate of efficiency, reliability, frequency, and maintainability. Regularly injecting Dev into my Ops wherever and whenever it makes sense."
+  thumb    : /images/author.jpg
+  email    : foobartn@outlook.com
+  url      : http://foobartn.github.io
+  github   : http://github.com/foobartn
+  twitter  : http://twitter.com/foobartn
+  facebook : http://facebook.com/joshua.barton.14
+  linkedin : http://linkedin.com/in/bartonjoshua
+
+# social settings
+og_locale: "en_US"
+twitter_card: "summary_large_image"
+twitter_site: "@foobartn"
+
+gems:
+  - bourbon
+  - jekyll-paginate
+
+# navbar pages
+navbar:
+  - slug : about
+    title: About
+  - slug : blog
+    title: Blog
+
+exclude: ["gulp", "node_modules", "bower", "bower_components", "config.rb", "src", "Gemfile", "Gemfile.lock", ".rvmrc", ".rbenv-version", "package.json", "gulpfile.js", "README.md", "Rakefile", "changelog.md"]
