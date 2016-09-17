@@ -213,3 +213,10 @@ hr {
     color: darken($medium-gray-color, 10%);
   }
 }
+
+.center-image {
+  margin: 0 auto;
+  display: block;
+  padding-bottom: 25px;
+  padding-top: 25px;
+}
