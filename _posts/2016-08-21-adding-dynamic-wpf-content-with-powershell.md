@@ -76,11 +76,13 @@ So how do we get our muggle of an add-a-button button to actually *and magically
 
 No. Not like Quidditch. But I like where your head is at.
 <code>System.Windows.Controls</code> namespace objects (buttons, textboxes, etc) can listen for events. Run:
+
 ``` powershell
 $WPFAddAButton | Get-Member -MemberType Event
 ```
 So many events! 111 to be exact. We're really only going to focus on one right now.
 To make our button "listen" for clicks, we're going to **Add** a click event to our PowerShell code. Like so:
+
 ``` powershell
 $WPFAddAButton.Add_Click({
    #What to do when button is clicked
@@ -121,12 +123,14 @@ $WPFAddAButton.Add_Click({
     $WPFStackButtonsHere.AddChild($NewButton)
 })
 ```
+
 ![](/assets/images/dynamic_wpf/BiggerButtons.PNG){: .center-image }
 
 Eureka! Wait.. Blank Buttons. What am I supposed to do with blank buttons?
 
 # Chaining Spells Together
 What if I added a text box for naming them? That requires changing up our XAML code a little, so here's the new block:
+
 ``` xml
 <Window x:Class="WpfApplication3.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -186,7 +190,9 @@ We know the name of each new button, because it comes from the text box. So we c
         $_.Name -eq $WPFButtonName.Text
     })
 ```
+
 Here we're just finding the child object we added to the stackpanel by referencing the name that you used in the text box. Next, we'll need to add an event to that button.
+
 ``` powershell
     # Add Click Event
     $AddedButton.Add_Click({
