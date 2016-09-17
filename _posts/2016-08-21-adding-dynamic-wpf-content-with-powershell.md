@@ -62,12 +62,12 @@ Sweet! A Window! Ooo, and you even have an Add-A-Button button! Which might be c
 Close this window and go back to your PowerShell prompt. If you type Get-Variable WPF*, you should get this as a result:
 
 
-```` powershell
+``` powershell
 Name                           Value
 ----                           -----
 WPFAddAButton                  System.Windows.Controls.Button: The Add-A-Button Button
 WPFStackButtonsHere            System.Windows.Controls.StackPanel
-````
+```
 And there we have our button and our stackpanel variables.
 
 So how do we get our muggle of an add-a-button button to actually *and magically* add buttons?
@@ -76,37 +76,37 @@ So how do we get our muggle of an add-a-button button to actually *and magically
 
 No. Not like Quidditch. But I like where your head is at.
 <code>System.Windows.Controls</code> namespace objects (buttons, textboxes, etc) can listen for events. Run:
-```` powershell
+``` powershell
 $WPFAddAButton | Get-Member -MemberType Event
-````
+```
 So many events! 111 to be exact. We're really only going to focus on one right now.
 To make our button "listen" for clicks, we're going to **Add** a click event to our PowerShell code. Like so:
-```` powershell
+``` powershell
 $WPFAddAButton.Add_Click({
    #What to do when button is clicked
 })
-````
+```
 Now that the button is listening, we can tell it what to do when clicked. First, we need to create a new button object in PowerShell
 
-```` powershell
+``` powershell
 $NewButton = New-Object System.Windows.Controls.Button
-````
+```
 
 > **Note:** For a list of available System.Windows.Controls classes, visit: https://msdn.microsoft.com/en-us/library/system.windows.controls(v=vs.110).aspx
 
 Then we need to add it to our stackpanel. We do this by calling the AddChild method. Doing so uses the stackpanel as the parent, and adds our new button inside it.
 
-```` powershell
+``` powershell
 $WPFStackButtonsHere.AddChild($NewButton)
-````
+```
 
 So the whole event looks like this:
-```` powershell
+``` powershell
 $WPFAddAButton.Add_Click({
     $NewButton = New-Object System.Windows.Controls.Button
     $WPFStackButtonsHere.AddChild($NewButton)
 })
-````
+```
 
 Let's try it!
 
@@ -114,20 +114,20 @@ Let's try it!
 
 Oh my.. those buttons are tiny. That just won't do. Perhaps we should consider changing the height of our summoned buttons?
 
-```` powershell
+``` powershell
 $WPFAddAButton.Add_Click({
     $NewButton = New-Object System.Windows.Controls.Button
     $NewButton.Height = 20
     $WPFStackButtonsHere.AddChild($NewButton)
 })
-````
+```
 ![](/assets/images/dynamic_wpf/BiggerButtons.PNG){: .center-image }
 
 Eureka! Wait.. Blank Buttons. What am I supposed to do with blank buttons?
 
 # Chaining Spells Together
 What if I added a text box for naming them? That requires changing up our XAML code a little, so here's the new block:
-```` xml
+``` xml
 <Window x:Class="WpfApplication3.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -142,11 +142,11 @@ What if I added a text box for naming them? That requires changing up our XAML c
         <TextBox x:Name="ButtonName" HorizontalAlignment="Left" Height="23" Margin="48,249,0,0" TextWrapping="Wrap" Text="Button Name Here" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window> 
-````
+```
 
 Run the script, close the window, and let's check our variables again..
 
-```` powershell
+``` powershell
 Get-Variable WPF*
 
 Name                           Value
@@ -154,11 +154,11 @@ Name                           Value
 WPFAddAButton                  System.Windows.Controls.Button: The Add-A-Button Button
 WPFButtonName                  System.Windows.Controls.TextBox: Button Name Here
 WPFStackButtonsHere            System.Windows.Controls.StackPanel
-````
+```
 
 Aha! A Button Name Box! Perfect! Let's make the new button's name and content be whatever is in that box. To do so we utilize the Name and Content properties of our $NewButton.
 
-```` powershell
+``` powershell
 $WPFAddAButton.Add_Click({
     $NewButton = New-Object System.Windows.Controls.Button
     $NewButton.Name = $WPFButtonName.Text
@@ -166,7 +166,7 @@ $WPFAddAButton.Add_Click({
     $NewButton.Height = 20
     $WPFStackButtonsHere.AddChild($NewButton)
 })
-````
+```
 > **Specialis Revelio**: One could get the available properties of a button (or any other control) by using: <code>New-Object System.Windows.Controls.Button | Get-Member -MemberType Property</code>
 
 A little flourish... and voila!
@@ -179,21 +179,21 @@ Well, how about we make the text box change to the name of whatever button we pr
 
 We know the name of each new button, because it comes from the text box. So we can create a new event nested inside the original Add_Click. We'll have to grab the actual button object we just added to the stack panel. 
 
-```` powershell
+``` powershell
     # Get the button you just added
     $AddedButton = ($WPFStackButtonsHere.Children | 
     Where-Object {
         $_.Name -eq $WPFButtonName.Text
     })
-````
+```
 Here we're just finding the child object we added to the stackpanel by referencing the name that you used in the text box. Next, we'll need to add an event to that button.
-```` powershell
+``` powershell
     # Add Click Event
     $AddedButton.Add_Click({
         [System.Object]$Sender = $args[0]
         $WPFButtonName.Text = $Sender.Name
     })
-````
+```
 I don't know if you noticed, but there's some serious sorcery [sounds like a good name for something] happening here. The Add_Click event actually passes the control object into the event as $args[0]. So we assigned it as $Sender, and then told it to change the text on the button name box to be whatever $Sender.Name is. This way, whichever button you click, it pulls directly from that button's properties.
 
 # You're a [PowerShell] Wizard!
