@@ -40,12 +40,13 @@ $ sudo pip install "pywinrm>=0.1.1"
 {% endhighlight %}
 
 **That's it!**
+
 You've officially installed Ansible 2.2+ on Windows. 
 
 ## Quick Test
-I happened to have a Vagrant Windows test box. If we want to make sure Ansible is working we can:
 
 ### Add your host to the default hosts file. 
+I happened to have a Vagrant Windows test box. To test that Ansible is working I did this:
 
 Run:
 
@@ -57,8 +58,6 @@ Add:
 
     [windows]
     192.168.57.3
-
-> Note: Use your own test box IP address
 
 Save and quit (:wq)
 
@@ -88,7 +87,7 @@ Run:
 $ ansible windows -m win_ping
 {% endhighlight %}
 
-You should get a response like this if things are working correctly:
+Successful Response:
 
     192.168.57.3 | SUCCESS => {
         "changed": false,
