@@ -19,9 +19,10 @@ tags:
 
 ## Preface
 
-*This is meant to be used in a test/dev situation.* In most [Ansible](https://www.ansible.com/) tutorials/guides 
-I have seen, creating a linux distro VM as your test control server is a standard part of the process for people 
-who have a Windows workstation. This doesn't have to be the case if you are running Windows 10. 
+In most [Ansible](https://www.ansible.com/) test/dev guides I have seen, creating a linux distro VM 
+as your control server is a standard part of the process for people who have a Windows workstation. 
+This doesn't have to be the case if you are running Windows 10. 
+
 **This is not meant for production use.**
 
 Happy Test/Dev-ing!
