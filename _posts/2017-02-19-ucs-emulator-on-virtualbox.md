@@ -48,12 +48,12 @@ You're going to get a window that looks like this:
 - Select Type: Linux
 - Select Version: Linux 2.6 / 3.x / 4.x (64-bit)
 
-*Click Next.*
+**Click Next.**
 
 On the next page you'll get asked how much RAM you want to allocate. In the VMX file, it shows the default
 memory is set to 1024, so that's where I left it.
 
-*Click Next.*
+**Click Next.**
 
 - Select the radio button for "Use an existing virtual hard disk file".
 - Click the folder with the green up arrow to browse for your VMDK file
@@ -67,7 +67,7 @@ Once you've selected your VMDK file, the window should look like this:
 > Note: The reason that you only choose the UCSPE.vmdk file is because it actually contains an extent list for
 > all of the other VMDK files in the folder:
 
-*Click Create*
+**Click Create**
 
 ## UCSPE VM Network Settings
 
