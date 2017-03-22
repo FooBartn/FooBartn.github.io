@@ -13,11 +13,13 @@ tags:
 - powershell
 ---
 
+> `Update (3/22/17):` Syntax section was updated with information about when you have to escape characters, and when you shouldn't. A new section about internal variables and a link to a screenshot from v6.5 was also added.
+
 ## UCS Director Intro
 
-For those of you that don't know, UCS Director is a [somewhat uncommon] orchestration engine from Cisco. I still think someone in marketing "whoopsed" on this one, in my opinion, by tying it directly to the Cisco Unified Computing System infrastructure. Why would you use it if you don't own Cisco UCS equipment? Well... because it has no dependency on or requirement that you even use Cisco's server hardware.
+For those of you that don't know, UCS Director is a [somewhat uncommon] orchestration engine from Cisco. I think someone in marketing "whoopsed" on this one, in my opinion, by tying it directly to the Cisco Unified Computing System infrastructure. Why would you use it if you don't own Cisco UCS equipment? Well... because it has no dependency on or requirement that you even use Cisco's server hardware.
 
->"What's in a name? That which we call a rose
+>"What's in a name? That which we call a rose  
 >By any other name..." `causes confusion`.
 
 UCS Director can integrate with virtualization platforms, network equipment, storage arrays, server systems and more from a variety of vendors. It can also use PowerShell directly in its workflows, which is the facet we're going to focus on for this article. The only thing Cisco UCSD and Cisco UCS really have in common is the company.
@@ -40,13 +42,13 @@ If you can't tell, I'm a huge fan. And I'd much rather write PowerShell than Clo
 
 Fortunately UCS Director can run PowerShell code on a remote machine, though you will have to install the PowerShell Scripting Agent (PSA) for UCSD somewhere in your environment first. It acts as a sort of proxy that actually runs the code.
 
-This means that anything you could do with PowerShell, you can call from within a UCS Director workflow. That opens up a world of possibilities! Unfortunately, it isn't without some... issues. Though they can be worked around without too much difficulty. Hopefully the following information will help you out on your journey if you're starting to use PowerShell with UCS Director!
+This means that anything you could do with PowerShell, you can call from within a UCS Director workflow. That opens up a world of possibilities! Unfortunately, it isn't without a bit of weird behavior, though most of it can be worked around without too much difficulty. Hopefully the following information will help you out on your journey if you're starting to use PowerShell with UCS Director!
 
 ## A Quirky Relationship
 
-Issues exist in all software. It's the nature of the thing. What is important to know is that Cisco is constantly working to improve their product. If you can get around these, UCS Director is a fantastic orchestration tool; and Cisco is constantly working to improve it.
+Issues exist in all software. It's the nature of the thing. What is important to know is that Cisco is constantly working to improve their product. If you can get around these, UCS Director is a fantastic orchestration tool.
 
-> `IMPORTANT NOTE:`
+> `IMPORTANT NOTE:`  
 > I'm told many of these issues are being addressed in UCS Director v6.5, which is currently in Beta. If you're going to Cisco Live, be sure to check out the UCS Director session by [Orf](https://twitter.com/ucsdguru)!
 
 ### Syntax
@@ -64,10 +66,11 @@ Because of this I usually make it a point to write as little PowerShell directly
 But this also leads another "quirk" you have to take into account. Any directory on the PSA agent that you want to specify needs to have double '\' marks. You have to escape the escape character.
 
 {% highlight powershell %}
-\$Foo = "D:\\\\\\$Bar\\\Directory\\\\"
+\$Foo = "D:\\\$Bar\\Directory\\"
 {% endhighlight %}
 
-> `Note:` Currently the list of known global UCSD variables in the VM Context is not listed in UCSD itself. You can find a list [here](https://github.com/FooBartn/UCS-Director/blob/master/UCSD-Variables.txt), and I plan on creating a post about variables; how to find ones you might not know you have access to, as well as how to create some custom inputs/outputs of your own.
+> `Update (3/22/17):`  
+> If you **don't** use any internal variables, then you should **NOT** escape anything. The UCSD PSA interpreter is "smart" and only kicks in if you use an internal variable. If you don't, it will take everything explicitly. So it will send all of the backslashes to PowerShell, which will likely break your script. Example added at the bottom.
 
 ### Security
 
@@ -107,11 +110,19 @@ In my workflows, the "On Failure" action for all of my PowerShell tasks leads th
 
 You can find the code I use for that [here](https://github.com/FooBartn/UCS-Director/blob/master/Get-LastPSError.ps1).
 
+## Finding the UCS Director Internal Variables
+
+So you want to use the global variables that are internal to UCSD? Surely there's a list of them somewhere in Director, right? That would be a big fat no. Currently the list of known global UCSD variables in the VM Context is not listed in UCSD itself. Thanks to Orf, there is a list of known ones which I have compiled [here](https://github.com/FooBartn/UCS-Director/blob/master/UCSD-Variables.txt), along with some post-deployment variables.
+
+I plan on creating a post about variables in the near future; how to find ones you might not know you have access to, as well as how to create some custom inputs/outputs of your own.
+
+> `Update (3/22/17):` Orf, the Cisco UCSD Guru was kind enough to share a screenshot from the 6.5 beta that shows a UCSD page with a list of available global variables. I'm told you can also create your own global variables as well! See the screenshot [here](/assets/images/ucsd_posh/UCSDVariables.png)
+
 ## Exemplī Grātiā
 
-Here are a few syntax examples for using PowerShell in UCSD.
+Here are a few syntax examples for using PowerShell in UCSD. I prefer to splat things because it makes for more legible code, especially in the Flash UI codebox that UCSD provides.
 
-- Using Code Directly in UCSD
+- **Using Code Directly in UCSD**
 
 {% highlight powershell %}
 \$ScriptParams = @{
@@ -125,7 +136,7 @@ Here are a few syntax examples for using PowerShell in UCSD.
 Send-MailMessage @ScriptParams
 {% endhighlight %}
 
-- Calling Script on the PSA Server
+- **Calling Script on the PSA Server**
 
 {% highlight powershell %}
 \$ScriptPath = 'D:\\Scripts\\New-VMFile.ps1'
@@ -138,6 +149,18 @@ Send-MailMessage @ScriptParams
 Invoke-Expression -Command "\$ScriptPath @ScriptParams"
 {% endhighlight %}
 
+- `Update (3/22/17):` **Code in UCSD With NO Internal Variables**
+
+{% highlight powershell %}
+$ScriptPath = 'D:\\Scripts\\New-VMFile.ps1'
+
+$ScriptParams = @{
+    VMName = 'MyVM'
+    DCName = 'MyDC'
+}
+
+Invoke-Expression -Command "$ScriptPath @ScriptParams"
+{% endhighlight %}
 
 ## Just Getting Started
 
@@ -145,12 +168,5 @@ I hope to be making a lot more posts about UCS Director, especially in regards t
 
 As always, feel free to hit me up on Twitter, LinkedIn, etc.
 
-Cheers!
+Cheers!  
 Joshua
-
-
-
-
-
-
-
