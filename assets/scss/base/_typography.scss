@@ -18,7 +18,7 @@ h6 {
   font-family: $heading-font-family;
   font-size: $base-font-size;
   line-height: $heading-line-height;
-  margin: 0 0 $small-spacing;
+  margin: 2em 0 0 0;
   font-weight: 600;
 }
 
@@ -44,7 +44,7 @@ h6 {
 }
 
 p {
-  margin: 1.7em 0 $small-spacing;
+  margin: 1em 0 $small-spacing;
 
   &.lead {
     font-size: rem(22);
