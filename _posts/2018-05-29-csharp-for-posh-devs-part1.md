@@ -190,7 +190,7 @@ Now, if you're following along, you might notice that you have an error in your 
 
 Our Main method is static. As we went over previously, this means it's not an object that can be created. Our GetResponse method is not static. Therefor it would really need to have a new Program() object initialized. We don't want to deal with creating new objects, yet. We just want this method to work. So we have to make it static, just like the Main method.
 
-> *Note* There are some very serious limitations with using static methods. In this case we're just making something that works similar to our PowerShell function. In the future we'll look at better ways of writing more complex code.
+> **Note:** There are some very serious limitations with using static methods. In this case we're just making something that works similar to our PowerShell function. In the future we'll look at better ways of writing more complex code.
 
 So our code should now look like this:
 
