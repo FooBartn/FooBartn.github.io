@@ -247,7 +247,7 @@ In PowerShell, variable declarations start with a $. C# variables either start w
 var myName = "brAIn";
 ```
 
-> *General Guideline:* In C# your private variables start with a lowercase letter. Public properties start with an uppercase. We'll talk more about this kind of thing another time, but, if you're using the latest version of Visual Studio, it should catch quite a few of them for you.
+> **General Guideline:** In C# your private variables start with a lowercase letter. Public properties start with an uppercase. We'll talk more about this kind of thing another time, but, if you're using the latest version of Visual Studio, it should catch quite a few of them for you.
 
 ### String Variable Interpolation
 
