@@ -143,7 +143,7 @@ Methods are the real equivalents of our PowerShell functions. In this case the m
 
 Notice that Main has two keywords proceeding it. 
 
-- The first is the word **static**. The static keyword on a class means it can't be instantiated as an object. The static keyword on a method means that it can be accessed directly without needed an instance of the class created.
+- The first is the word **static**. The static keyword on a class means it can't be instantiated as an object. The static keyword on a method means that it can be accessed directly without needing an instance of the class created.
 
 - The second keyword is **void**. This is the return type of the method. We can return any kind of data: string, int, custom class, etc. Void means that we're returning absolutely nothing. We're just going to do a thing and be done.
 
