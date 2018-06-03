@@ -12,6 +12,11 @@ tags:
 - C#
 ---
 
+**UPDATES**
+
+- 06.02.2018: Updated Basic Syntax Differences
+    - [@MarkeKraus](https://twitter.com/markekraus) recently pointed out that I probably missed a good chance to tell you about the differences in case sensitivity between C# and PowerShell. I added a little information in the syntax section that will hopefully help. Thanks, Mark!
+
 ## Intro
 
 So you're a PowerShell-er, but you're interested in doing something with C#? Awesome! I'm here to help. I'm not going to go deep in the weeds in this series, but I'm going to see if I can get you from point A to point B with brief explanations inbetween. It'll be up to you to take it the rest of the way ^__^
@@ -32,6 +37,9 @@ Powershell
     - "My name is $Name"
 - Parameters are added through a param block inside the function
     - Parameters do not require a type. They will infer a type based on input.
+- Case insensitive
+    - $MyVariable and $myvariable are the same thing
+    - Get-Process and get-process are the same thing
 
 C#
 
@@ -41,6 +49,10 @@ C#
     - $"My name is {name}"
 - Parameters are specified inside the () after a method name
     - C# is a strongly typed language, and thus requires a type specification on parameters.
+- Case sensitive
+    - MyVariable and myVariable are **not** the same thing. 
+    - GetProcess and getprocess would **not** get you to the same method.
+        - Technically this is a general naming rule violation, but I'm just using it to make a point.
 
 ## A PowerShell Base
 
