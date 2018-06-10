@@ -2,7 +2,7 @@
 layout: post
 title: "Bind to Collection with Tag Helpers"
 description: "Using tag helpers to easily bind data to a list property of a model"
-date: 2018-06-05 21:00:00
+date: 2018-06-09 21:00:00
 comments: true
 keywords: "Asp.Net Core, .Net Core, dotnet core, CSharp, C#, Razor, Tag Helpers"
 category: Development
